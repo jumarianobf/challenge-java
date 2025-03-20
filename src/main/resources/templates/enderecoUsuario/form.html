@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${endereco.enderecoUsuarioId != null ? 'Editar Endereço de Usuário' : 'Cadastrar Endereço de Usuário'})}">
+    <title>Cadastrar/Editar Endereço de Usuário - OdontoPrev</title>
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('usuarios')}"></div>
+
+<div class="content-with-sidebar">
+    <div class="container-fluid py-4">
+        <!-- Mensagem de sucesso, se houver -->
+        <div th:if="${mensagem}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensagem}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Mensagem de erro, se houver -->
+        <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${erro}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Cabeçalho comum -->
+        <div class="header">
+            <div class="icon-circle">
+                <i class="fas fa-map-marker-alt text-white fa-lg"></i>
+            </div>
+            <h1 class="gradient-title">OdontoPrev</h1>
+            <p class="text-muted">Sistema de Gerenciamento de Usuários</p>
+        </div>
+
+        <!-- Card do Formulário -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0" th:text="${endereco.enderecoUsuarioId == null ? 'Cadastrar Novo Endereço' : 'Editar Endereço'}">Cadastrar Novo Endereço</h5>
+            </div>
+
+            <div class="card-body">
+                <!-- Formulário de Cadastro ou Edição -->
+                <form th:action="@{${endereco.enderecoUsuarioId == null ? '/enderecos-usuarios/salvar' : '/enderecos-usuarios/atualizar/' + endereco.enderecoUsuarioId}}"
+                      th:object="${endereco}" method="post" class="needs-validation" novalidate>
+
+                    <div class="row g-4">
+                        <div class="mb-3">
+                            <label for="usuario" class="form-label">Usuário <span class="text-danger">*</span></label>
+                            <select id="usuario" th:field="*{usuario}" class="form-select" required>
+                                <option value="" th:text="'Selecione um usuário'">Selecione um usuário</option>
+                                <option th:each="usuario : ${usuarios}"
+                                        th:value="${usuario.usuarioId}"
+                                        th:text="${usuario.nome}">Usuário</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Por favor, selecione um usuário.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campos do endereço -->
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="cepUsuario" class="form-label">CEP <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-location-arrow"></i></span>
+                                <input type="text" class="form-control" id="cepUsuario" th:field="*{cepUsuario}" placeholder="CEP" required/>
+                            </div>
+                            <div class="invalid-feedback">
+                                Por favor, informe o CEP.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outros campos de endereço -->
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label for="logradouroUsuario" class="form-label">Logradouro <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-road"></i></span>
+                                <input type="text" class="form-control" id="logradouroUsuario" th:field="*{logradouroUsuario}" placeholder="Logradouro" required/>
+                            </div>
+                            <div class="invalid-feedback">
+                                Por favor, informe o logradouro.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outros campos do endereço -->
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="bairroUsuario" class="form-label">Bairro <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-map-marker"></i></span>
+                                <input type="text" class="form-control" id="bairroUsuario" th:field="*{bairroUsuario}" placeholder="Bairro" required/>
+                            </div>
+                            <div class="invalid-feedback">
+                                Por favor, informe o bairro.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outros campos do endereço -->
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="cidadeUsuario" class="form-label">Cidade <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-city"></i></span>
+                                <input type="text" class="form-control" id="cidadeUsuario" th:field="*{cidadeUsuario}" placeholder="Cidade" required/>
+                            </div>
+                            <div class="invalid-feedback">
+                                Por favor, informe a cidade.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campo Estado -->
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="estadoUsuario" class="form-label">Estado <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-map"></i></span>
+                                <input type="text" class="form-control" id="estadoUsuario" th:field="*{estadoUsuario}" placeholder="Estado" required/>
+                            </div>
+                            <div class="invalid-feedback">
+                                Por favor, informe o estado.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="/usuarios" class="btn btn-outline-primary icon-btn">
+                            <i class="fas fa-arrow-left"></i> Voltar para a lista de Usuários
+                        </a>
+
+                        <button type="submit" class="btn btn-primary icon-btn">
+                            <i class="fas fa-save"></i> Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+
+<script>
+    // JavaScript para validação de formulário
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
+    // Máscara para o CEP
+    $(document).ready(function() {
+        $('#cepUsuario').mask('00000-000');
+
+        // Buscar endereço pelo CEP
+        $('#cepUsuario').blur(function() {
+            const cep = $(this).val().replace(/\D/g, '');
+
+            if (cep.length === 8) {
+                $.getJSON(`https://viacep.com.br/ws/${cep}/json/`, function(data) {
+                    if (!data.erro) {
+                        $('#logradouroUsuario').val(data.logradouro);
+                        $('#bairroUsuario').val(data.bairro);
+                        $('#cidadeUsuario').val(data.localidade);
+                        $('#estadoUsuario').val(data.uf);
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

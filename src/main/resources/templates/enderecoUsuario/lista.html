@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Lista de Endereços')}">
+    <title>Lista de Endereços - OdontoPrev</title>
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('clinicas')}"></div>
+
+<div class="content-with-sidebar">
+    <div class="container-fluid py-4">
+        <!-- Mensagem de sucesso, se houver -->
+        <div th:if="${mensagem}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensagem}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Mensagem de erro, se houver -->
+        <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${erro}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Cabeçalho comum -->
+        <div class="header">
+            <div class="icon-circle">
+                <i class="fas fa-map-marker-alt text-white fa-lg"></i>
+            </div>
+            <h1 class="gradient-title">OdontoPrev</h1>
+            <p class="text-muted">Sistema de Gerenciamento de Endereços de Usuários</p>
+        </div>
+
+        <!-- Card da Lista -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Lista de Endereços</h5>
+                <a href="/enderecos-usuario/novo" class="btn btn-cyan">
+                    <i class="fas fa-plus me-1"></i> Novo Endereço
+                </a>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">CEP</th>
+                            <th scope="col">Logradouro</th>
+                            <th scope="col">Bairro</th>
+                            <th scope="col">Cidade</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Usuário</th>
+                            <th scope="col" class="text-center">Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${#lists.isEmpty(endereco)}">
+                            <td colspan="8" class="text-center py-4">
+                                <i class="fas fa-map-marker-alt text-muted mb-3" style="font-size: 2rem;"></i>
+                                <p class="mb-0">Nenhum endereço cadastrado.</p>
+                            </td>
+                        </tr>
+
+                        <tr th:each="enderecos : ${endereco}">
+                            <td th:text="${enderecos.enderecoUsuarioId}"></td>
+                            <td th:text="${enderecos.cepUsuario}"></td>
+                            <td th:text="${enderecos.logradouroUsuario}"></td>
+                            <td th:text="${enderecos.bairroUsuario}"></td>
+                            <td th:text="${enderecos.cidadeUsuario}"></td>
+                            <td th:text="${enderecos.estadoUsuario}"></td>
+                            <td th:text="${enderecos.usuario != null ? enderecos.usuario.nome : 'N/A'}"></td>
+                            <td class="text-center">
+                                <a th:href="@{/enderecos-usuario/editar/{id}(id=${enderecos.enderecoUsuarioId})}"
+                                   class="btn btn-sm btn-outline-primary action-btn">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <button type="button" class="btn btn-sm btn-outline-danger action-btn"
+                                        data-bs-toggle="modal" th:data-bs-target="'#deleteModal' + ${enderecos.enderecoUsuarioId}">
+                                    <i class="fas fa-trash"></i> Deletar
+                                </button>
+
+
+                                <!-- Modal de confirmação -->
+                                <div class="modal fade" th:id="'deleteModal' + ${enderecos.enderecoUsuarioId}" tabindex="-1"
+                                     th:aria-labelledby="'deleteModalLabel' + ${enderecos.enderecoUsuarioId}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" th:id="'deleteModalLabel' + ${enderecos.enderecoUsuarioId}">Confirmar exclusão</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-start">
+                                                Tem certeza que deseja excluir o endereço
+                                                <span class="fw-bold" th:text="${enderecos.logradouroUsuario + ', ' + enderecos.bairroUsuario}"></span>?
+                                                <p class="text-danger mt-2 mb-0"><small>Esta ação não poderá ser desfeita.</small></p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <a th:href="@{/enderecos-usuario/deletar/{id}(id=${enderecos.enderecoUsuarioId})}" class="btn btn-danger">
+                                                    Excluir
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card-footer text-end">
+                <a href="/" class="btn btn-outline-cyan">
+                    <i class="fas fa-home me-1"></i> Voltar para o Início
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
