@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Fragmento do sidebar -->
+<div th:fragment="sidebar(activeMenu)" class="sidebar">
+    <button id="sidebarToggle" class="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="sidebar-header">
+        <div class="d-flex align-items-center p-3">
+            <div class="icon-circle me-2" style="width: 2.5rem; height: 2.5rem;">
+                <i class="fas fa-tooth text-white"></i>
+            </div>
+            <h5 class="mb-0 text-white sidebar-title">Parrot Tech</h5>
+        </div>
+    </div>
+    <div class="sidebar-menu">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeMenu == 'home' ? 'active' : ''}" href="/">
+                    <i class="fas fa-home me-2"></i> <span class="sidebar-text">Início</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeMenu == 'clinicas' ? 'active' : ''}" href="/clinicas">
+                    <i class="fas fa-hospital me-2"></i> <span class="sidebar-text">Clínicas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeMenu == 'dentistas' ? 'active' : ''}" href="/dentistas">
+                    <i class="fas fa-user-md me-2"></i> <span class="sidebar-text">Dentistas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeMenu == 'usuarios' ? 'active' : ''}" href="/usuarios">
+                    <i class="fas fa-users me-2"></i> <span class="sidebar-text">Pacientes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeMenu == 'atendimentos' ? 'active' : ''}" href="/atendimentos">
+                    <i class="fas fa-calendar-check me-2"></i> <span class="sidebar-text">Atendimentos</span>
+                </a>
+            </li>
+            <!-- Corrigido para Endereços -->
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeMenu == 'enderecoClinica' ? 'active' : ''}" href="/enderecos-clinicas">
+                    <i class="fas fa-map-marker-alt me-2"></i> <span class="sidebar-text">Endereços de Clínicas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeMenu == 'enderecoUsuario' ? 'active' : ''}" href="/enderecos-usuario">
+                    <i class="fas fa-map-marker-alt me-2"></i> <span class="sidebar-text">Endereços de Usuários</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeMenu == 'previsaoUsuario' ? 'active' : ''}" href="/previsao-usuarios">
+                    <i class="fas fa-map-marker-alt me-2"></i> <span class="sidebar-text">Previsão de Usuários</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeMenu == 'imagemUsuario' ? 'active' : ''}" href="/imagens-usuarios">
+                    <i class="fas fa-map-marker-alt me-2"></i> <span class="sidebar-text">Imagens de Usuários</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
