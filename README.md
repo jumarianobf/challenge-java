@@ -78,6 +78,13 @@ Ou, caso esteja utilizando Gradle:
 http://localhost:8080
 ```
 
+## Exemplos de Teste
+- View
+- ![image](https://github.com/user-attachments/assets/a355dea3-bf9e-4c13-8a14-1cd5c9618ab3)
+
+- Oracle SQL
+- ![image](https://github.com/user-attachments/assets/860c28b0-2a76-4ab7-b8b0-ec877de8678f)
+
 
 ## 📜 Licença
 
