@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Lista de Endereços')}">
+    <title>Lista de Endereços - OdontoPrev</title>
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('clinicas')}"></div>
+
+<div class="content-with-sidebar">
+    <div class="container-fluid py-4">
+        <!-- Mensagem de sucesso, se houver -->
+        <div th:if="${mensagem}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensagem}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Mensagem de erro, se houver -->
+        <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${erro}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Cabeçalho comum -->
+        <div class="header">
+            <div class="icon-circle">
+                <i class="fas fa-map-marker-alt text-white fa-lg"></i>
+            </div>
+            <h1 class="gradient-title">OdontoPrev</h1>
+            <p class="text-muted">Sistema de Gerenciamento de Clínicas</p>
+        </div>
+
+        <!-- Card da Lista -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Lista de Endereços</h5>
+                <a href="/enderecos-clinicas/novo" class="btn btn-cyan">
+                    <i class="fas fa-plus me-1"></i> Novo Endereço
+                </a>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">CEP</th>
+                            <th scope="col">Logradouro</th>
+                            <th scope="col">Bairro</th>
+                            <th scope="col">Cidade</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Clínica</th> <!-- Coluna para a clínica -->
+                            <th scope="col" class="text-center">Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${#lists.isEmpty(enderecos)}">
+                            <td colspan="8" class="text-center py-4">
+                                <i class="fas fa-map-marker-alt text-muted mb-3" style="font-size: 2rem;"></i>
+                                <p class="mb-0">Nenhum endereço cadastrado</p>
+                                <a href="/enderecos-clinicas/novo" class="btn btn-outline-cyan mt-3">
+                                    Cadastrar Endereço
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:each="enderecoClinica : ${enderecos}">
+                            <td th:text="${enderecoClinica.enderecoClinicaId}"></td>
+                            <td th:text="${enderecoClinica.cepClinica}"></td>
+                            <td th:text="${enderecoClinica.logradouroClinica}"></td>
+                            <td th:text="${enderecoClinica.bairroClinica}"></td>
+                            <td th:text="${enderecoClinica.cidadeClinica}"></td>
+                            <td th:text="${enderecoClinica.estadoClinica}"></td>
+                            <td th:text="${enderecoClinica.clinica.nomeClinica}"></td>
+                            <td class="text-center">
+                                <a th:href="@{/enderecos-clinicas/editar/{id}(id=${enderecoClinica.enderecoClinicaId})}"
+                                   class="btn btn-sm btn-outline-primary action-btn">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <button type="button" class="btn btn-sm btn-outline-danger action-btn"
+                                        data-bs-toggle="modal" th:data-bs-target="'#deleteModal' + ${enderecoClinica.enderecoClinicaId}">
+                                    <i class="fas fa-trash"></i> Deletar
+                                </button>
+                                <!-- Modal de confirmação -->
+                                <div class="modal fade" th:id="'deleteModal' + ${enderecoClinica.enderecoClinicaId}" tabindex="-1"
+                                     th:aria-labelledby="'deleteModalLabel' + ${enderecoClinica.enderecoClinicaId}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" th:id="'deleteModalLabel' + ${enderecoClinica.enderecoClinicaId}">Confirmar exclusão</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-start">
+                                                Tem certeza que deseja excluir o endereço
+                                                <span class="fw-bold" th:text="${enderecoClinica.logradouroClinica + ', ' + enderecoClinica.bairroClinica}"></span>?
+                                                <p class="text-danger mt-2 mb-0"><small>Esta ação não poderá ser desfeita.</small></p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <a th:href="@{/enderecos-clinicas/deletar/{id}(id=${enderecoClinica.enderecoClinicaId})}" class="btn btn-danger">
+                                                    Excluir
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card-footer text-end">
+                <a href="/" class="btn btn-outline-cyan">
+                    <i class="fas fa-home me-1"></i> Voltar para o Início
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${endereco.enderecoClinicaId != null ? 'Editar Endereço' : 'Cadastrar Endereço'})}">
+    <title>Cadastrar/Editar Endereço - OdontoPrev</title>
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('clinicas')}"></div>
+
+<div th:if="${mensagem}" class="alert alert-success">
+    <span th:text="${mensagem}"></span>
+</div>
+
+<div class="content-with-sidebar">
+    <div class="container-fluid py-4">
+        <!-- Mensagem de sucesso, se houver -->
+        <div th:if="${mensagem}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensagem}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Mensagem de erro, se houver -->
+        <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${erro}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Cabeçalho comum -->
+        <div class="header">
+            <div class="icon-circle">
+                <i class="fas fa-map-marker-alt text-white fa-lg"></i>
+            </div>
+            <h1 class="gradient-title">OdontoPrev</h1>
+            <p class="text-muted">Sistema de Gerenciamento de Clínicas</p>
+        </div>
+
+        <!-- Card do Formulário -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0" th:text="${endereco.enderecoClinicaId == null ? 'Cadastrar Novo Endereço' : 'Editar Endereço'}">Cadastrar Novo Endereço</h5>
+            </div>
+
+            <div class="card-body">
+                <!-- Formulário de Cadastro ou Edição -->
+                <form th:action="@{${endereco.enderecoClinicaId == null ? '/enderecos-clinicas/salvar' : '/enderecos-clinicas/atualizar/' + endereco.enderecoClinicaId}}"
+                      th:object="${endereco}" method="post" class="needs-validation" novalidate>
+
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="clinicaId" class="form-label">Clínica <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-clinic-medical"></i></span>
+                                    <select id="clinicaId" class="form-control" th:field="*{clinica.clinicaId}" required>
+                                        <option value="" th:text="'Selecione uma clínica'"></option>
+                                        <option th:each="clinica : ${clinicas}"
+                                                th:value="${clinica.clinicaId}"
+                                                th:text="${clinica.nomeClinica}"
+                                                th:selected="${clinica.clinicaId == clinicaId}"></option>
+                                    </select>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Por favor, informe a clínica.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo CEP -->
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="cepClinica" class="form-label">CEP <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-location-arrow"></i></span>
+                                    <input type="text" class="form-control" id="cepClinica" th:field="*{cepClinica}" placeholder="CEP" required/>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Por favor, informe o CEP.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo Logradouro -->
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="logradouroClinica" class="form-label">Logradouro <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-road"></i></span>
+                                    <input type="text" class="form-control" id="logradouroClinica" th:field="*{logradouroClinica}" placeholder="Logradouro" required/>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Por favor, informe o logradouro.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo Bairro -->
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="bairroClinica" class="form-label">Bairro <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-map-marker"></i></span>
+                                    <input type="text" class="form-control" id="bairroClinica" th:field="*{bairroClinica}" placeholder="Bairro" required/>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Por favor, informe o bairro.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo Cidade -->
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="cidadeClinica" class="form-label">Cidade <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-city"></i></span>
+                                    <input type="text" class="form-control" id="cidadeClinica" th:field="*{cidadeClinica}" placeholder="Cidade" required/>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Por favor, informe a cidade.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo Estado -->
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="estadoClinica" class="form-label">Estado <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-map"></i></span>
+                                    <input type="text" class="form-control" id="estadoClinica" th:field="*{estadoClinica}" placeholder="Estado" required/>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Por favor, informe o estado.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="/clinicas" class="btn btn-outline-primary icon-btn">
+                            <i class="fas fa-arrow-left"></i> Voltar para a lista de Clínicas
+                        </a>
+
+                        <button type="submit" class="btn btn-primary icon-btn">
+                            <i class="fas fa-save"></i> Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+
+<script>
+    // JavaScript para validação de formulário
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
+    // Máscara para o CEP
+    $(document).ready(function() {
+        $('#cepClinica').mask('00000-000');
+
+        // Buscar endereço pelo CEP
+        $('#cepClinica').blur(function() {
+            const cep = $(this).val().replace(/\D/g, '');
+
+            if (cep.length === 8) {
+                $.getJSON(`https://viacep.com.br/ws/${cep}/json/`, function(data) {
+                    if (!data.erro) {
+                        $('#logradouroClinica').val(data.logradouro);
+                        $('#bairroClinica').val(data.bairro);
+                        $('#cidadeClinica').val(data.localidade);
+                        $('#estadoClinica').val(data.uf);
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
