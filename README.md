@@ -41,7 +41,8 @@ A aplicação segue o padrão MVC (Model-View-Controller):
 
 ![Odontoprev drawio (sprint_3 1)](https://github.com/user-attachments/assets/999ff54c-fbe9-4ffa-a667-3e099af1ee42)
 
-
+## Link Vídeo Youtube
+https://www.youtube.com/watch?v=8IKoBKmTnYA
 
 
 ## Pré-requisitos
