@@ -37,6 +37,9 @@ A aplicação segue o padrão MVC (Model-View-Controller):
 - 💻 Spring Boot
 
 ## 📈 Diagramas
+![Odontoprev drawio (sprint_3)](https://github.com/user-attachments/assets/0cc6e5ae-e087-496a-b873-5f29ebf3d6e9)
+
+![Odontoprev drawio (sprint_3 1)](https://github.com/user-attachments/assets/999ff54c-fbe9-4ffa-a667-3e099af1ee42)
 
 
 
