@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${previsao.previsaoUsuarioId != null ? 'Editar Previsão' : 'Cadastrar Previsão'})}">
+    <title>Cadastrar/Editar Previsão - OdontoPrev</title>
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('previsao')}"></div>
+
+<div th:if="${mensagem}" class="alert alert-success">
+    <span th:text="${mensagem}"></span>
+</div>
+
+<div class="content-with-sidebar">
+    <div class="container-fluid py-4">
+        <div th:if="${mensagem}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensagem}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${erro}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="header">
+            <div class="icon-circle">
+                <i class="fas fa-chart-line text-white fa-lg"></i>
+            </div>
+            <h1 class="gradient-title">OdontoPrev</h1>
+            <p class="text-muted">Sistema de Previsão de Usuários</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0" th:text="${previsao.previsaoUsuarioId == null ? 'Cadastrar Nova Previsão' : 'Editar Previsão'}">Cadastrar Nova Previsão</h5>
+            </div>
+
+            <div class="card-body">
+                <form th:action="@{${previsao.previsaoUsuarioId == null ? '/previsao-usuarios/salvar' : '/previsao-usuarios/atualizar/' + previsao.previsaoUsuarioId}}"
+                      th:object="${previsao}" method="post" class="needs-validation" novalidate>
+
+
+                <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="usuarioId" class="form-label">Usuário <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <select id="usuarioId" class="form-control" th:field="*{usuario.usuarioId}" required>
+                                        <option value="" th:text="'Selecione um usuário'"></option>
+                                        <option th:each="usuario : ${usuarios}"
+                                                th:value="${usuario.usuarioId}"
+                                                th:text="${usuario.nome}"
+                                                th:selected="${usuario.usuarioId == previsao.usuario?.usuarioId}"></option>
+                                    </select>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Por favor, informe o usuário.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="imagemUsuarioId" class="form-label">Imagem do Usuário <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                    <select id="imagemUsuarioId" class="form-control" th:field="*{imagemUsuario.imagemUsuarioId}" required>
+                                        <option value="" th:text="'Selecione uma imagem'"></option>
+                                        <!-- Iteração sobre as imagens cadastradas -->
+                                        <option th:each="imagem : ${imagens}"
+                                                th:value="${imagem.imagemUsuarioId}"
+                                                th:text="${imagem.imagemUrl}"
+                                        th:selected="${imagem.imagemUsuarioId == previsao.imagemUsuario?.imagemUsuarioId}"></option>
+                                    </select>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Por favor, informe a imagem do usuário.
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Pré-visualização da Imagem -->
+                        <div th:if="${previsao.imagemUsuario?.imagemUsuarioId != null}">
+                            <p><strong>Imagem Selecionada:</strong></p>
+                            <img th:src="@{${previsao.imagemUsuario.imagemUrl}}" alt="Imagem do Usuário" width="100"/>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="previsaoTexto" class="form-label">Texto da Previsão <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="previsaoTexto" th:field="*{previsaoTexto}" rows="3" placeholder="Texto da previsão" required></textarea>
+                                <div class="invalid-feedback">
+                                    Por favor, informe o texto da previsão.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="probabilidade" class="form-label">Probabilidade <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="probabilidade" th:field="*{probabilidade}" min="0" max="100" step="0.01" placeholder="Probabilidade (%)" required/>
+                                <div class="invalid-feedback">
+                                    Por favor, informe a probabilidade.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="recomendacao" class="form-label">Recomendação <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="recomendacao" th:field="*{recomendacao}" placeholder="Recomendação" required/>
+                                <div class="invalid-feedback">
+                                    Por favor, informe a recomendação.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="dataPrevisao" class="form-label">Data da Previsão <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="dataPrevisao" th:field="*{dataPrevisao}" required/>
+                                <div class="invalid-feedback">
+                                    Por favor, informe a data da previsão.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="/previsao-usuarios" class="btn btn-outline-primary icon-btn">
+                            <i class="fas fa-arrow-left"></i> Voltar para a lista de Previsões
+                        </a>
+
+                        <button type="submit" class="btn btn-primary icon-btn">
+                            <i class="fas fa-save"></i> Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+
+<script>
+    // Função para exibir a imagem ao selecionar uma nova
+    function exibirImagem(event) {
+        var imagemId = event.target.value;
+        var imagemUrl = '/imagens/' + imagemId;  // Aqui, modifique para o caminho da sua imagem
+        var preview = document.getElementById('imagemPreview');
+        preview.src = imagemUrl;
+        preview.style.display = 'block';
+    }
+
+    // JavaScript para validação de formulário
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+</body>
+</html>
