@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${imagem.imagemUsuarioId != null ? 'Editar Imagem' : 'Cadastrar Imagem'})}">
+    <title>Cadastrar/Editar Imagem de Usuário - OdontoPrev</title>
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('imagem')}"></div>
+
+<div th:if="${mensagem}" class="alert alert-success">
+    <span th:text="${mensagem}"></span>
+</div>
+
+<div class="content-with-sidebar">
+    <div class="container-fluid py-4">
+        <div th:if="${mensagem}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensagem}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${erro}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="header">
+            <div class="icon-circle">
+                <i class="fas fa-image text-white fa-lg"></i>
+            </div>
+            <h1 class="gradient-title">OdontoPrev</h1>
+            <p class="text-muted">Sistema de Imagens de Usuários</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0" th:text="${imagem.imagemUsuarioId == null ? 'Cadastrar Nova Imagem' : 'Editar Imagem'}">Cadastrar Nova Imagem</h5>
+            </div>
+
+            <div class="card-body">
+                <form th:action="@{${imagem.imagemUsuarioId == null ? '/imagens-usuarios/salvar' : '/imagens-usuarios/atualizar/' + imagem.imagemUsuarioId}}"
+                      th:object="${imagem}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="usuarioId" class="form-label">Usuário <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <select id="usuarioId" class="form-control" th:field="*{usuario.usuarioId}" required>
+                                        <option value="" th:text="'Selecione um usuário'"></option>
+                                        <option th:each="usuario : ${usuarios}"
+                                                th:value="${usuario.usuarioId}"
+                                                th:text="${usuario.nome}"
+                                                th:selected="${usuario.usuarioId == imagem.usuario?.usuarioId}"></option>
+                                    </select>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Por favor, informe o usuário.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="imagemUrl" class="form-label">Imagem URL <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                    <input type="text" id="imagemUrl" class="form-control" th:field="*{imagemUrl}" required placeholder="Insira a URL da imagem">
+                                </div>
+                                <div class="invalid-feedback">
+                                    Por favor, informe a URL da imagem.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="dataEnvio" class="form-label">Data de Envio <span class="text-danger">*</span></label>
+                                <input type="date" id="dataEnvio" class="form-control" th:field="*{dataEnvio}" required>
+                                <div class="invalid-feedback">
+                                    Por favor, informe a data de envio.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="/imagens-usuarios" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left"></i> Voltar para a lista de Imagens
+                        </a>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+
+<script>
+    // JavaScript para validação de formulário
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+</body>
+</html>
