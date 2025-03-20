@@ -8,7 +8,7 @@
 
 ## Descrição e Proposta de solução
 
-O objetivo deste projeto é aplicar técnicas de análise preditiva e Inteligência Artificial para a redução de sinistros, utilizando um chatbot com IA, processamento de imagens, reutilização de dados e modularidade.
+O objetivo deste projeto é aplicar técnicas de análise preditiva para a redução de sinistros, utilizando processamento de imagens, reutilização de dados e modularidade.
 
 A solução foi projetada para otimizar o atendimento ao cliente e prever incidentes antes que ocorram, melhorando a eficiência e a precisão no gerenciamento de sinistros. A análise preditiva é realizada utilizando dados históricos de atendimentos e outros parâmetros de risco.
 
